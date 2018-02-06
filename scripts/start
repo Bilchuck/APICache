@@ -1,0 +1,2 @@
+sh ./scripts/build
+node lib/server.js
