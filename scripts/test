@@ -1,0 +1,2 @@
+sh ./scripts/build
+./node_modules/.bin/mocha ./dist/**/*.spec.js

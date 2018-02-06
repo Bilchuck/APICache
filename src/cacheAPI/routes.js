@@ -1,7 +1,18 @@
-import * as cacheService from './cacheService';
+import cacheServiceGenerator from './cacheService';
+import Cache from './cache.model';
+import mongoose from 'mongoose';
+
+const database = 'mongodb://localhost:27017/cacheAPI';
+mongoose.connect(database, {
+    useMongoClient: true,
+  }, () => {
+    console.log(`Connected to db: ${database}`);
+});
+const cacheService = cacheServiceGenerator(Cache);
 
 const CACHE_ENDPOINT = '/cache';
 const KEYS_ENDPOINT = '/keys';
+
 
 const registerCacheRoutes = app => {
     app.get(CACHE_ENDPOINT, (req, res) => {
@@ -14,8 +25,8 @@ const registerCacheRoutes = app => {
     app.post(CACHE_ENDPOINT, (req, res) => {
         const {key, value} = req.body;      
         cacheService.create(key, value)
-            .then(r => sendOk(res)(r))
-            .catch(e => sendError(res)(e));
+            .then(sendOk(res))
+            .catch(sendError(res));
     });
     app.put(`${CACHE_ENDPOINT}/:key`, (req, res) => {
         const { key } = req.params;
