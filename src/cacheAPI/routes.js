@@ -1,12 +1,12 @@
 import cacheServiceGenerator from './cacheService';
 import Cache from './cache.model';
 import mongoose from 'mongoose';
+import { cacheDb } from '../config';
 
-const database = 'mongodb://localhost:27017/cacheAPI';
-mongoose.connect(database, {
+mongoose.connect(cacheDb, {
     useMongoClient: true,
   }, () => {
-    console.log(`Connected to db: ${database}`);
+    console.log(`Connected to db: ${cacheDb}`);
 });
 const cacheService = cacheServiceGenerator(Cache);
 

@@ -1,5 +1,4 @@
-const MAX_CACHE_COUNT = 5;
-const TTL = 10000; //10 sec
+import {maxCacheCount, cacheTTL} from '../config';
 
 const cacheServiceGenerator = (cacheDB) => {
     const cacheValueGenerator = () => Math.random().toString();
@@ -22,7 +21,7 @@ const cacheServiceGenerator = (cacheDB) => {
     }
     const validateDocNumbers = doc => {
         return cacheDB.count({}).then(n => {
-            if (n > MAX_CACHE_COUNT) {
+            if (n > maxCacheCount) {
                 // remove the oldest doc
                 return cacheDB
                     .findOne()
@@ -35,7 +34,7 @@ const cacheServiceGenerator = (cacheDB) => {
         });
     }
     const validateTTL = doc => {
-        const expiredDate = new Date(doc.lastUsage.getTime() + TTL);
+        const expiredDate = new Date(doc.lastUsage.getTime() + cacheTTL);
         const now = new Date();
         const updateDoc = () => now > expiredDate 
             ? doc.update({ $set: { value: cacheValueGenerator(), lastUsage: new Date() } })

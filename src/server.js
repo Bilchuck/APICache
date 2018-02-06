@@ -1,9 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import registerCacheRoutes from './cacheAPI/routes';
+import {PORT} from './config';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+
+app.set('PORT', PORT);
+
 
 app.use(bodyParser.json());
 
