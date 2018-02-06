@@ -1,1 +1,1 @@
-babel src --out-dir lib
+babel src --out-dir dist

@@ -1,2 +1,2 @@
 sh ./scripts/build
-node lib/server.js
+node dist/server.js
