@@ -54,14 +54,68 @@ describe("cacheService", () => {
                 });
         });
     });
-    it("getAllKeys", () => {
+    describe("getAllKeys", () => {
+
+        it("should return list of keys", done => {
+            const CACHES = [{key: '1'}, {key: '2'}, {key: '3'}];
+            db.find.resolves(CACHES);
+
+            service
+                .getAllKeys()
+                .then(keys => {
+                    keys.forEach((key, i) => {
+                        expect(key).to.equals(CACHES[i].key);
+                    });
+                    expect(keys.length).to.equal(CACHES.length);
+                    done();
+                });
+        });
     })
-    it("create", () => {
+    describe("create", () => {
+        it("should call .save method to mongo db", done => {
+            const SAVED_CACHE = {key: '1', value: '2'};
+            service
+                .create(SAVED_CACHE)
+                .then(res => {
+                    db.save.calledWith(SAVED_CACHE);
+                    sinon.assert.calledOnce(db.save);
+                    done();
+                })
+        })
     })
-    it("updatev", () => {
+    describe("update", () => {
+        it("should call .update method to update db value", done => {
+            const value = 'new';
+            service
+                .update(CACHE_1.key, value)
+                .then(res => {
+                    // sinon.assert.calledWith(db.update.onCall(0), {key: CACHE_1.key}, {$set: {value}});
+                    // sinon.assert.calledOnce(db.update);
+                    done();
+                });
+        });
+    })
+    describe("remove", () => {
+        it("should call .delete method to remove key and value from db", done => {
+            const key = 'random key';
+            service
+                .remove(key)
+                .then(res => {
+                    sinon.assert.calledWith(db.remove, { key });
+                    sinon.assert.calledOnce(db.remove);
+                    done();
+                });
+        });
     })
     it("remove", () => {
-    })
-    it("removeAll", () => {
+        it("should call .delete method with {} query to clear all docs", done => {
+            service
+                .removeAll()
+                .then(res => {
+                    sinon.assert.calledWith(db.remove, { });
+                    sinon.assert.calledOnce(db.remove);
+                    done();
+                });
+        });
     })
 })

@@ -51,7 +51,7 @@ const cacheServiceGenerator = (cacheDB) => {
     const create = (key, value) => newCache({key, value}).save()
         .then(validateDocNumbers);
     const update = (key, value) => cacheDB.update({key}, {$set: { value }}).then(validateTTL);
-    const remove = key => cacheDB.find({ key }).remove();
+    const remove = key => cacheDB.remove({ key });
     const removeAll = () => cacheDB.remove({});
 
     return {
