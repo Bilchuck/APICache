@@ -37,8 +37,8 @@ const cacheServiceGenerator = (cacheDB) => {
         const expiredDate = new Date(doc.lastUsage.getTime() + cacheTTL);
         const now = new Date();
         const updateDoc = () => now > expiredDate 
-            ? doc.update({ $set: { value: cacheValueGenerator(), lastUsage: new Date() } })
-            : doc.update({ $set: { lastUsage: new Date() } });
+            ? cacheDB.update({key: doc.key}, { $set: { value: cacheValueGenerator(), lastUsage: new Date() } })
+            : cacheDB.update({key: doc.key}, { $set: { lastUsage: new Date() } });
         
         return updateDoc().then(_ => cacheDB.findOne({key: doc.key}));
     }

@@ -59,3 +59,5 @@ typings/
 
 # folder with compiled js
 dist
+
+.idea
