@@ -89,8 +89,7 @@ describe("cacheService", () => {
             service
                 .update(CACHE_1.key, value)
                 .then(res => {
-                    // sinon.assert.calledWith(db.update.onCall(0), {key: CACHE_1.key}, {$set: {value}});
-                    // sinon.assert.calledOnce(db.update);
+                    sinon.assert.calledWith(db.update, {key: CACHE_1.key}, {$set: {value}});
                     done();
                 });
         });
